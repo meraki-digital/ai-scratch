@@ -11,9 +11,11 @@ export function numberWithCommas(num: number, decimalPlaces?: number): string {
   // Split into integer and decimal parts
   const [integerPart, decimalPart] = fixedNum.split(".");
 
-  // Add commas to integer part
-  const withCommas = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  // Handle negative sign
+  const isNegative = integerPart.startsWith("-");
+  const absoluteInt = isNegative ? integerPart.slice(1) : integerPart;
+  const withCommas = absoluteInt.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-  // Rejoin with decimal part if exists
-  return decimalPart !== undefined ? `${withCommas}.${decimalPart}` : withCommas;
+  // Rejoin with negative sign and decimal part if exists
+  return (isNegative ? "-" : "") + (decimalPart !== undefined ? `${withCommas}.${decimalPart}` : withCommas);
 }
